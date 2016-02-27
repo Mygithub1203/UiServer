@@ -3,10 +3,33 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.deeplearning4j</groupId>
   <artifactId>deeplearning4j-ui-standalone</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>deeplearning4j-ui-standalone Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <properties>
+    <nd4j.version>0.4-rc3.9-SNAPSHOT</nd4j.version>
+    <canova.version>0.0.0.15-SNAPSHOT</canova.version>
+    <commonsmath.version>3.4.1</commonsmath.version>
+    <commonslang.version>3.3.1</commonslang.version>
+    <commonsio.version>2.4</commonsio.version>
+    <args4j.version>2.0.29</args4j.version>
+    <slf4j.version>1.7.12</slf4j.version>
+    <junit.version>4.12</junit.version>
+    <logback.version>1.1.2</logback.version>
+    <jackson.version>2.5.1</jackson.version>
+    <netty.version>3.10.4.Final</netty.version>
+    <netty.buffer.version>4.0.28.Final</netty.buffer.version>
+    <lombok.version>1.16.4</lombok.version>
+    <cleartk.version>2.0.0</cleartk.version>
+    <dropwizard.version>0.8.0</dropwizard.version>
+    <lucene.version>5.3.1</lucene.version>
+    <json.version>20131018</json.version>
+    <google.protobuf.version>2.6.1</google.protobuf.version>
+    <failIfNoTests>false</failIfNoTests>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -14,8 +37,76 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.nd4j</groupId>
+      <artifactId>nd4j-x86</artifactId>
+      <version>LATEST</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>19.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.deeplearning4j</groupId>
+      <artifactId>deeplearning4j-ui</artifactId>
+      <version>0.4-rc3.9-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
   </dependencies>
   <build>
-    <finalName>deeplearning4j-ui-standalone</finalName>
+    <finalName>deeplearning4j-ui-servlet</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>deeplearning4j-ui-dropwizard</finalName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.deeplearning4j.ui.standalone.UiServerExecutable</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>war</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
