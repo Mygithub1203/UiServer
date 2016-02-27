@@ -1,5 +1,16 @@
 *.class
-
+.DS_Store
+pom.xml.releaseBackup 
+target/
+dependency-reduced-pom.xml
+release.properties
+.idea/
+*.iml
+*.prefs
+*.settings/*
+*.log
+.project
+.classpath
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
