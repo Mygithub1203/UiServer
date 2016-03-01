@@ -4,6 +4,7 @@ import org.deeplearning4j.ui.activation.RenderView;
 import org.deeplearning4j.ui.defaults.DefaultResource;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -23,10 +24,11 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 public class DefaultProxy extends DefaultResource {
 
     @Context private ServletContext context;
+    @Context private HttpServletRequest servletRequest;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response getView() {
-        return AssetsAccessor.getView(context, "default.ftl");
+        return AssetsAccessor.getView(context,servletRequest, "default.ftl");
     }
 }

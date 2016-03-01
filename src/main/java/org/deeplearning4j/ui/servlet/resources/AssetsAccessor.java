@@ -2,13 +2,16 @@ package org.deeplearning4j.ui.servlet.resources;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  *
@@ -56,13 +59,32 @@ public class AssetsAccessor {
      * @param file
      * @return
      */
-    public static Response getView(ServletContext ctx, String file) {
+    public static Response getView(ServletContext ctx, HttpServletRequest servletRequest, String file) {
 
         try {
             InputStream contentStream = ctx.getResourceAsStream("/views/" + file);
-            if (contentStream == null) return Response.status(Response.Status.CONFLICT).build();
+            if (contentStream == null) return Response.status(Response.Status.NOT_FOUND).build();
 
-            return Response.ok(contentStream).type(MediaType.TEXT_HTML_TYPE).build();
+            /*
+                Load everything, and fix paths
+             */
+            BufferedReader reader = new BufferedReader(new InputStreamReader(contentStream));
+            StringBuilder builder = new StringBuilder();
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+            String content = builder.toString();
+            String path = servletRequest.getPathInfo();
+
+            content = content.replaceAll("(\\.|\\..|)\\/assets\\/","ROOKIE9821nZas");
+            if (path.endsWith("/") && !file.equals("default.ftl")) {
+                content = content.replaceAll("ROOKIE9821nZas","../assets/");
+            } else {
+                content = content.replaceAll("ROOKIE9821nZas","./assets/");
+            }
+
+            return Response.ok(content).type(MediaType.TEXT_HTML_TYPE).build();
         } catch (Exception e) {
             throw new RuntimeException(e);
             //Response.status(Response.Status.BAD_REQUEST).build();

@@ -6,6 +6,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,13 +19,14 @@ import javax.ws.rs.core.Response;
  */
 @Path("tsne")
 public class TsneProxy extends TsneResource {
-    @Context
-    private ServletContext context;
+    @Context private ServletContext context;
+    @Context private HttpServletRequest servletRequest;
+
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response getView() {
-        return AssetsAccessor.getView(context, "tsne.ftl");
+        return AssetsAccessor.getView(context, servletRequest, "tsne.ftl");
     }
 
     public TsneProxy() {
