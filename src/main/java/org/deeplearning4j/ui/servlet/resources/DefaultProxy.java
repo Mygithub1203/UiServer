@@ -25,9 +25,4 @@ public class DefaultProxy extends DefaultResource {
     public Response getView() {
         return Response.ok("Wow!").build();
     }
-
-    @Override
-    public DefaultView get() {
-        return null;
-    }
 }
