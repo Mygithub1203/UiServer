@@ -3,9 +3,11 @@ package org.deeplearning4j.ui.servlet.resources;
 import org.deeplearning4j.ui.activation.RenderView;
 import org.deeplearning4j.ui.defaults.DefaultResource;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -20,9 +22,11 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 @Path("/")
 public class DefaultProxy extends DefaultResource {
 
+    @Context private ServletContext context;
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response getView() {
-        return Response.ok("Wow!").build();
+        return AssetsAccessor.getView(context, "default.ftl");
     }
 }

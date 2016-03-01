@@ -1,6 +1,6 @@
 package org.deeplearning4j.ui.servlet.resources;
 
-import org.deeplearning4j.ui.flow.FlowResource;
+import org.deeplearning4j.ui.weights.WeightResource;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
@@ -13,14 +13,15 @@ import javax.ws.rs.core.Response;
 /**
  * @author raver119@gmail.com
  */
-@Path("flow")
-public class FlowProxy extends FlowResource {
+@Path("weights")
+public class WeightsProxy extends WeightResource {
+
     @Context
     private ServletContext context;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response getView() {
-        return AssetsAccessor.getView(context, "flow.ftl");
+        return AssetsAccessor.getView(context, "weights.ftl");
     }
 }
