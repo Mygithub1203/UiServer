@@ -34,5 +34,5 @@ MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.setListeners(Collections.singletonList((IterationListener) new HistogramIterationListener(connectionInfo, listenerFreq)));
 ```
 
-In this example we assume that external web service is used located at 8.8.8.8:8080, and servled is deployed at ***deeplearning4j-ui-servlet*** path.
+In this example we assume that external web service is used located at 8.8.8.8:8080, and servlet is deployed at ***deeplearning4j-ui-servlet*** path.
 If you're going to use dropwizard-based executable, then setPath() call should be omitted, since everything will be deployed within root folder.
