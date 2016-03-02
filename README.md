@@ -23,15 +23,15 @@ To use remote UiServer with your DL4j tasks, there's example code available:
 ```
 ...
 MultiLayerNetwork model = new MultiLayerNetwork(conf);
-        model.init();
+model.init();
 
-        UiConnectionInfo connectionInfo = new UiConnectionInfo.Builder()
-                .setAddress("8.8.8.8")
-                .setPort(8080)
-                .setPath("deeplearning4j-ui-servlet")
-                .build();
+UiConnectionInfo connectionInfo = new UiConnectionInfo.Builder()
+        .setAddress("8.8.8.8")
+        .setPort(8080)
+        .setPath("deeplearning4j-ui-servlet")
+        .build();
 
-        model.setListeners(Collections.singletonList((IterationListener) new HistogramIterationListener(connectionInfo, listenerFreq)));
+model.setListeners(Collections.singletonList((IterationListener) new HistogramIterationListener(connectionInfo,listenerFreq)));
 ```
 
 In this example we assume that external web service is used located at 8.8.8.8:8080, and servlet is deployed at ***deeplearning4j-ui-servlet*** path.
