@@ -69,7 +69,7 @@ public class AssetsAccessor {
                 }
                 String content = builder.toString().replaceAll("ALPHA8812mZ",nPath);
 
-                return Response.ok(content).type(outputType).build();
+                return Response.ok(content).build();
             } catch (Exception e) {
                 //Response.status(Response.Status.NOT_FOUND).build();
                 throw new RuntimeException(e);
@@ -79,7 +79,7 @@ public class AssetsAccessor {
                 InputStream contentStream = ctx.getResourceAsStream("/assets/" + subResources);
                 if (contentStream == null) return Response.status(Response.Status.NOT_FOUND).build();
 
-                return Response.ok(contentStream).type(outputType).build();
+                return Response.ok(contentStream).build();
             } catch (Exception e) {
                 throw new RuntimeException(e);
                 //Response.status(Response.Status.NOT_FOUND).build();
