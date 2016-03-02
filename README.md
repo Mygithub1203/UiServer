@@ -36,3 +36,5 @@ model.setListeners(Collections.singletonList((IterationListener) new HistogramIt
 
 In this example we assume that external web service is used located at 8.8.8.8:8080, and servlet is deployed at ***deeplearning4j-ui-servlet*** path.
 If you're going to use dropwizard-based executable, then setPath() call should be omitted, since everything will be deployed within root folder.
+
+Obviously, network address passed into UiConnectionInfo should be accessible from host where DL4j is running.
