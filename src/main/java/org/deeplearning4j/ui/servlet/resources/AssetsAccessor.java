@@ -12,6 +12,8 @@ import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -23,6 +25,9 @@ import java.io.InputStreamReader;
 public class AssetsAccessor {
 
     @Context protected ServletContext ctx;
+    @Context private HttpServletRequest servletRequest;
+
+    private static Pattern p = Pattern.compile("(\\/)(?:weights|api|word2vec|flow|arbiter|activations|tsne|sessions|whatsup|events)");
 
     @GET
     @Path("{subResources: [a-zA-Z][a-zA-Z0-9_/\\-.]+}")
@@ -38,6 +43,36 @@ public class AssetsAccessor {
                 return Response.ok(contentStream).type(outputType).build();
             } catch (Exception e) {
                 Response.status(Response.Status.NOT_FOUND).build();
+            }
+        } else if (subResources.endsWith(".js")) {
+            try {
+                InputStream contentStream = ctx.getResourceAsStream("/assets/" + subResources);
+                if (contentStream == null) return Response.status(Response.Status.NOT_FOUND).build();
+
+            /*
+                Load everything, and fix paths
+             */
+                BufferedReader reader = new BufferedReader(new InputStreamReader(contentStream));
+                StringBuilder builder = new StringBuilder();
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line).append("\n");
+                }
+                //String content = builder.toString();
+                String path = servletRequest.getRequestURI();
+
+                String nPath = getPrefix(path, "assets");
+                Matcher m = p.matcher(builder);
+                while (m.find()) {
+                    int position = m.start();
+                    builder.replace(position, position+1, "ALPHA8812mZ");
+                }
+                String content = builder.toString().replaceAll("ALPHA8812mZ",nPath);
+
+                return Response.ok(content).type(outputType).build();
+            } catch (Exception e) {
+                //Response.status(Response.Status.NOT_FOUND).build();
+                throw new RuntimeException(e);
             }
         } else {
             try {
@@ -83,6 +118,8 @@ public class AssetsAccessor {
             } else {
                 content = content.replaceAll("ROOKIE9821nZas","./assets/");
             }
+            String nPath = getPrefix(servletRequest.getRequestURI(),"sdsds");
+            content = content.replaceAll("href=\"/\"","href=\"" + nPath + "\"");
 
             return Response.ok(content).type(MediaType.TEXT_HTML_TYPE).build();
         } catch (Exception e) {
@@ -91,5 +128,20 @@ public class AssetsAccessor {
         }
 
       //  return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_HTML_TYPE).build();
+    }
+
+    private static String getPrefix(String path, String stop) {
+        StringBuilder prefix = new StringBuilder();
+        String[] split = path.split("\\/");
+        int cnt = 0;
+        for (String chunk: split) {
+            if (chunk.equals(stop) || cnt == split.length - 1)
+                break;
+            prefix.append("/").append(chunk);
+            cnt++;
+        }
+
+        prefix.append("/");
+        return  prefix.toString().replaceAll("\\/{2,}","/");
     }
 }
