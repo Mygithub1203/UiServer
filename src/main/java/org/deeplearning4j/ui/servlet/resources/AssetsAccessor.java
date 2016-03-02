@@ -121,6 +121,14 @@ public class AssetsAccessor {
             String nPath = getPrefix(servletRequest.getRequestURI(),"sdsds");
             content = content.replaceAll("href=\"/\"","href=\"" + nPath + "\"");
 
+            builder = new StringBuilder(content);
+            Matcher m = p.matcher(builder);
+            while (m.find()) {
+                int position = m.start();
+                builder.replace(position, position+1, "ALPHA8812mZ");
+            }
+            content = builder.toString().replaceAll("ALPHA8812mZ",nPath);
+
             return Response.ok(content).type(MediaType.TEXT_HTML_TYPE).build();
         } catch (Exception e) {
             throw new RuntimeException(e);

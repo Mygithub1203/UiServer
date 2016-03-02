@@ -26,7 +26,7 @@ public class Word2VecProxy extends NearestNeighborsResource {
     }
 
     public Word2VecProxy() {
-        ;
+        this(System.getProperty("java.io.tmpdir"));
     }
 
     /**

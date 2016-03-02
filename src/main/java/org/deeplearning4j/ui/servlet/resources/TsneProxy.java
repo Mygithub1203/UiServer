@@ -30,7 +30,7 @@ public class TsneProxy extends TsneResource {
     }
 
     public TsneProxy() {
-        ;
+        this(System.getProperty("java.io.tmpdir"));
     }
     /**
      * The file path for uploads
