@@ -25,6 +25,9 @@ To use a remote UiServer with your DL4j tasks, here's some example code:
 MultiLayerNetwork model = new MultiLayerNetwork(conf);
 model.init();
 
+Note here that the port is 8250 please override this in the dropwizard.yml under src/main/resources
+to 0 if you want dynamic binding. We do this so we can make assumptions about how to run ports.
+
 UiConnectionInfo connectionInfo = new UiConnectionInfo.Builder()
         .setAddress("8.8.8.8")
         .setPort(8080)

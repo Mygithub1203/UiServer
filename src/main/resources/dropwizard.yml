@@ -3,7 +3,7 @@ server:
 #  hardNofileLimit: 1000
   applicationConnectors:
     - type: http
-      port: 0
+      port: 8250
       acceptorThreads: 5
       selectorThreads: 3
       bindHost: 0.0.0.0 # only bind to loopback
